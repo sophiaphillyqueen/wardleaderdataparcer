@@ -37,6 +37,8 @@ foreach $sourceline (@sourcelins)
   }
 }
 
+
+# The following 
 sub incazen {
   my $lc_ra;
   my $lc_rb;
@@ -48,6 +50,10 @@ sub incazen {
   return ( 2 > 1 );
 }
 
+
+
+# The following function is the filter function that returns 'true' for records that
+# will be included in the output, and 'false' for records that will be omitted.
 sub approved {
   my @lc_tabs;
   my $lc_test;
@@ -55,10 +61,13 @@ sub approved {
   @lc_tabs = split(/\t/,$_[0]);
   
   
+  # Column #0 is named "FilerName" ----- and we will now filter out any record that does
+  # not contain the word "ward" in it.
   $lc_test = index(lc($lc_tabs[0]),"ward");
   if ( $lc_test == -1 ) { return ( 1 > 2 ); }
   
-  # Column #3 is the DocType column
+  # Column #3 is the "DocType" column --- and we will filter out anything without the
+  # word "Contributions".
   #if ( !(&incazen($lc_tabs[3], "Contributions Received From Political Committees")) ) { return ( 1 > 2 ); }
   if ( !(&incazen($lc_tabs[3], "Contributions")) ) { return ( 1 > 2 ); }
   
