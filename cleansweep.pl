@@ -51,12 +51,37 @@ sub incazen {
 }
 
 
+sub hasamount {
+  my $lc_oz;
+  my $lc_on;
+  my $lc_src;
+  my $lc_this;
+  
+  $lc_oz = ord('0');
+  $lc_on = ord('9');
+  $lc_src = $_[0];
+  while ( $lc_src ne "" )
+  {
+    $lc_this = ord(chop($lc_src));
+    if ( $lc_this > ( $lc_oz - 0.5 ) )
+    {
+      if ( $lc_this < ( $lc_on + 0.5 ) )
+      {
+        return ( 2 > 1 );
+      }
+    }
+  }
+  
+  return ( 1 > 2 );
+}
+
 
 # The following function is the filter function that returns 'true' for records that
 # will be included in the output, and 'false' for records that will be omitted.
 sub approved {
   my @lc_tabs;
   my $lc_test;
+  my $lc_tstb;
   
   @lc_tabs = split(/\t/,$_[0]);
   
@@ -70,6 +95,10 @@ sub approved {
   # word "Contributions".
   #if ( !(&incazen($lc_tabs[3], "Contributions Received From Political Committees")) ) { return ( 1 > 2 ); }
   if ( !(&incazen($lc_tabs[3], "Contributions")) ) { return ( 1 > 2 ); }
+  
+  
+  # Column #18 is the "Amount" field. If it has no amount, I filter out this record.
+  if ( !(&hasamount($lc_tabs[18])) ) { return ( 1 > 2 ); }
   
   return ( 2 > 1 );
 }
